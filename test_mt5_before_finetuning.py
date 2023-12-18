@@ -61,7 +61,10 @@ if __name__ == "__main__":
 
     # Calculate ROUGE scores
     scores = rouge.get_scores(predictions, references, avg=True)
-    print(scores)    
+    print('')
+    print('Rouge scores: ') 
+    print(scores) 
+    print('')
 
     # Optional: Save the result_df to a CSV file
     output_folder = '/content/drive/MyDrive/swiss-german-normalization/'
