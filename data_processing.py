@@ -14,7 +14,7 @@ def clean_text(text):
     return text
 
 # Step 1: Parse the JSON File
-json_file_path = '/swiss-german-normalization/sentences_ch_de_numerics.json'
+json_file_path = '/content/swiss-german-normalization/sentences_ch_de_numerics.json'
 with open(json_file_path, 'r', encoding='utf-8') as file:
     data = json.load(file)
 
