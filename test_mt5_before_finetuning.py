@@ -7,6 +7,8 @@ import torch
 import logging
 from simpletransformers.t5 import T5Model, T5Args
 
+from rouge import Rouge
+
 # If data_processing is in a different directory, you might need to append the directory to sys.path
 # import sys
 # sys.path.append('/path/to/directory/where/data_processing.py/is')
@@ -47,6 +49,19 @@ if __name__ == "__main__":
 
     # Call the main function to perform inference
     result_df = main(model, json_file_path)
+
+    
+    # Initialize the ROUGE metric
+    rouge = Rouge()
+
+    # Prepare the data for ROUGE calculation
+    # Convert the 'preds' and 'target_text' columns to lists of strings
+    predictions = result_df["preds"].values.tolist()
+    references = result_df["target_text"].values.tolist()
+
+    # Calculate ROUGE scores
+    scores = rouge.get_scores(predictions, references, avg=True)
+    print(scores)    
 
     # Optional: Save the result_df to a CSV file
     output_folder = '/content/drive/MyDrive/swiss-german-normalization/'
