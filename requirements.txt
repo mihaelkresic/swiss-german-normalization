@@ -1,11 +1,7 @@
-!pip install fairseq
-
-!pip install transformers
-!pip install simpletransformers
-
-!pip install sentencepiece
-
-!pip install rouge -q
-!pip install --upgrade bleu
-
-!pip install wandb
+fairseq
+transformers
+simpletransformers
+sentencepiece
+rouge -q
+--upgrade bleu
+wandb
