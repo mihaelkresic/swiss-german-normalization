@@ -2,6 +2,6 @@ fairseq
 transformers
 simpletransformers
 sentencepiece
-rouge -q
---upgrade bleu
+rouge
+bleu
 wandb
