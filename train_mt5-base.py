@@ -10,8 +10,8 @@ def setup_logging():
 def get_model_args():
     model_args = T5Args()
     model_args.max_seq_length = 100
-    model_args.train_batch_size = 20
-    model_args.eval_batch_size = 20
+    model_args.train_batch_size = 10
+    model_args.eval_batch_size = 10
     model_args.num_train_epochs = 10
     model_args.scheduler = "cosine_schedule_with_warmup"
     model_args.evaluate_during_training = True
