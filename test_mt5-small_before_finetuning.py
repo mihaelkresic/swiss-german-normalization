@@ -9,7 +9,8 @@ import torch
 import logging
 from simpletransformers.t5 import T5Model, T5Args
 
-from rouge import Rouge
+#from rouge import Rouge
+import sacrebleu
 
 # If data_processing is in a different directory, you might need to append the directory to sys.path
 # import sys
@@ -54,21 +55,28 @@ if __name__ == "__main__":
 
     
     # Initialize the ROUGE metric
-    rouge = Rouge()
+    #rouge = Rouge()
 
     # Prepare the data for ROUGE calculation
     # Convert the 'preds' and 'target_text' columns to lists of strings
-    predictions = result_df["preds"].values.tolist()
-    references = result_df["target_text"].values.tolist()
+    #predictions = result_df["preds"].values.tolist()
+    #references = result_df["target_text"].values.tolist()
 
     # Calculate ROUGE scores
-    scores = rouge.get_scores(predictions, references, avg=True)
+    #scores = rouge.get_scores(predictions, references, avg=True)
+
+    predictions = result_df["preds"].values.tolist()
+    references = result_df["target_text"].apply(lambda x: [x]).values.tolist()
+
+    # Calculate ChrF++ scores
+    scores = sacrebleu.corpus_chrf(predictions, references, beta=2, word_order=1).score
+    
     print('')
-    print('Rouge scores: ') 
+    print('ChrF++ score: ') 
     print(scores) 
     print('')
 
     # Optional: Save the result_df to a CSV file
     output_folder = '/content/drive/MyDrive/swiss-german-normalization/'
-    result_df.to_csv(output_folder + 'test_predictions_mt5_before_finetuning.csv', index=False)
+    result_df.to_csv(output_folder + 'test_predictions_mt5-small_before_finetuning.csv', index=False)
     logger.info("Inference completed and saved to CSV.")
