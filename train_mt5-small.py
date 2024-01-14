@@ -32,8 +32,8 @@ def get_model_args():
     model_args.use_early_stopping = True
     model_args.num_return_sequences = 1
     model_args.do_lower_case = True
-    model_args.output_dir = "/content/drive/MyDrive/swiss-german-normalization/mT5/"
-    model_args.best_model_dir = "/content/drive/MyDrive/swiss-german-normalization/mT5/best_model"
+    model_args.output_dir = "/content/drive/MyDrive/swiss-german-normalization/mT5-small/"
+    model_args.best_model_dir = "/content/drive/MyDrive/swiss-german-normalization/mT5-small/best_model"
     model_args.wandb_project = "CH-DE mT5"
 
     return model_args
