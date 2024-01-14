@@ -1,6 +1,5 @@
 transformers
 simpletransformers
 sentencepiece
-rouge
-bleu
+sacrebleu
 wandb
