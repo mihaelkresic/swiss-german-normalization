@@ -34,7 +34,7 @@ def get_model_args():
     model_args.do_lower_case = True
     model_args.output_dir = "/content/drive/MyDrive/swiss-german-normalization/mT5-small/"
     model_args.best_model_dir = "/content/drive/MyDrive/swiss-german-normalization/mT5-small/best_model"
-    model_args.wandb_project = "CH-DE mT5"
+    model_args.wandb_project = "CH-DE mT5-small"
 
     return model_args
 
