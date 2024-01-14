@@ -1,3 +1,5 @@
+%%time
+
 import logging
 from simpletransformers.t5 import T5Model, T5Args
 import data_processing
