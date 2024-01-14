@@ -3,3 +3,4 @@ simpletransformers
 sentencepiece
 sacrebleu
 wandb
+tensorrt
