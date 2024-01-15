@@ -7,7 +7,7 @@ import torch
 import logging
 from simpletransformers.t5 import T5Model, T5Args
 
-#from rouge import Rouge
+from rouge import Rouge
 import sacrebleu
 
 # If data_processing is in a different directory, you might need to append the directory to sys.path
@@ -53,7 +53,7 @@ if __name__ == "__main__":
 
     
     # Initialize the ROUGE metric
-    #rouge = Rouge()
+    rouge = Rouge()
 
     # Prepare the data for ROUGE calculation
     # Convert the 'preds' and 'target_text' columns to lists of strings
@@ -68,6 +68,9 @@ if __name__ == "__main__":
 
     # Calculate ChrF++ scores
     #scores = sacrebleu.corpus_chrf(predictions, references, beta=2, word_order=1).score
+
+    # Calculate Bleu scores
+    #scores = sacrebleu.corpus_bleu(predictions, references)
     
     print('')
     print('Rouge scores: ') 
