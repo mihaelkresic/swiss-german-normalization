@@ -7,12 +7,8 @@ import torch
 import logging
 from simpletransformers.t5 import T5Model, T5Args
 
-from rouge import Rouge
 import sacrebleu
 
-# If data_processing is in a different directory, you might need to append the directory to sys.path
-# import sys
-# sys.path.append('/path/to/directory/where/data_processing.py/is')
 
 # Now, import your refactored data_processing module
 import data_processing
@@ -51,29 +47,19 @@ if __name__ == "__main__":
     # Call the main function to perform inference
     result_df = main(model, json_file_path)
 
-    
-    # Initialize the ROUGE metric
-    rouge = Rouge()
+    # Prepare the daata for ChrF++ calculation and calculate in on a sentence by sentence case
+    # Convert the 'preds' column to list of strings and the 'target_text' column to list of lists of strings
+    chrf_scores = []
+    for index, row in result_df.iterrows():
+        prediction = row['preds']
+        reference = [row['target_text']]
+        score = sacrebleu.sentence_chrf(prediction, reference, beta=2, word_order=1).score
+        chrf_scores.append(score)
 
-    # Prepare the data for ROUGE calculation
-    # Convert the 'preds' and 'target_text' columns to lists of strings
-    predictions = result_df["preds"].values.tolist()
-    references = result_df["target_text"].values.tolist()
-
-    # Calculate ROUGE scores
-    scores = rouge.get_scores(predictions, references, avg=True)
-
-    #predictions = result_df["preds"].values.tolist()
-    #references = result_df["target_text"].apply(lambda x: [x]).values.tolist()
-
-    # Calculate ChrF++ scores
-    #scores = sacrebleu.corpus_chrf(predictions, references, beta=2, word_order=1).score
-
-    # Calculate Bleu scores
-    #scores = sacrebleu.corpus_bleu(predictions, references)
+    scores = sum(chrf_scores) / len(chrf_scores)
     
     print('')
-    print('Rouge scores: ') 
+    print('ChrF++ score: ') 
     print(scores) 
     print('')
 
