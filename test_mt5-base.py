@@ -64,7 +64,7 @@ if __name__ == "__main__":
     scores = rouge.get_scores(predictions, references, avg=True)
 
     #predictions = result_df["preds"].values.tolist()
-    3references = result_df["target_text"].apply(lambda x: [x]).values.tolist()
+    #references = result_df["target_text"].apply(lambda x: [x]).values.tolist()
 
     # Calculate ChrF++ scores
     #scores = sacrebleu.corpus_chrf(predictions, references, beta=2, word_order=1).score
