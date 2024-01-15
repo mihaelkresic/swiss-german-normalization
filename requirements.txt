@@ -2,5 +2,7 @@ transformers
 simpletransformers
 sentencepiece
 sacrebleu
+bleu
+rouge
 wandb
 tensorrt
