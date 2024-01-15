@@ -57,20 +57,20 @@ if __name__ == "__main__":
 
     # Prepare the data for ROUGE calculation
     # Convert the 'preds' and 'target_text' columns to lists of strings
-    #predictions = result_df["preds"].values.tolist()
-    #references = result_df["target_text"].values.tolist()
+    predictions = result_df["preds"].values.tolist()
+    references = result_df["target_text"].values.tolist()
 
     # Calculate ROUGE scores
-    #scores = rouge.get_scores(predictions, references, avg=True)
+    scores = rouge.get_scores(predictions, references, avg=True)
 
-    predictions = result_df["preds"].values.tolist()
-    references = result_df["target_text"].apply(lambda x: [x]).values.tolist()
+    #predictions = result_df["preds"].values.tolist()
+    #references = result_df["target_text"].apply(lambda x: [x]).values.tolist()
 
     # Calculate ChrF++ scores
-    scores = sacrebleu.corpus_chrf(predictions, references, beta=2, word_order=1).score
+    #scores = sacrebleu.corpus_chrf(predictions, references, beta=2, word_order=1).score
     
     print('')
-    print('ChrF++ score: ') 
+    print('Rouge scores: ') 
     print(scores) 
     print('')
 
