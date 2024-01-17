@@ -1,5 +1,6 @@
-transformers
 simpletransformers
+transformers
+peft
 sentencepiece
 sacrebleu
 bleu
