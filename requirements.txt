@@ -2,6 +2,8 @@ simpletransformers
 transformers
 peft
 sentencepiece
+bitsandbytes
+accelerate
 sacrebleu
 bleu
 rouge
