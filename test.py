@@ -33,7 +33,7 @@ def perform_inference(test_df, model, tokenizer):
 
 def main(model_name, json_file_path):
     # Initialize the tokenizer and model dynamically based on the model_name argument
-    tokenizer = T5Tokenizer.from_pretrained(model_name)
+    tokenizer = MT5Tokenizer.from_pretrained(model_name)
     model = MT5ForConditionalGeneration.from_pretrained(model_name)
 
     # Use the refactored data_processing module to get the test data
