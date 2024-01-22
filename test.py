@@ -14,6 +14,8 @@ import data_processing
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 def perform_inference(test_df, model, tokenizer):
 
     preds = []
@@ -21,8 +23,13 @@ def perform_inference(test_df, model, tokenizer):
         # Encode the input text
         input = tokenizer(input_text, return_tensors="pt")
 
+        input_ids = input['input_ids'].to(device)
+        attention_mask = input['attention_mask'].to(device)
+
         # Generate prediction
-        output = model.generate(input_ids=input["input_ids"], attention_mask=input["attention_mask"])
+        #output = model.generate(input_ids=input["input_ids"], attention_mask=input["attention_mask"])
+        output = model.generate(input_ids=input_ids, attention_mask=attention_mask)
+        
         
         # Decode the generated ids
         pred_text = tokenizer.decode(output[0], skip_special_tokens=True)
@@ -34,7 +41,7 @@ def perform_inference(test_df, model, tokenizer):
 def main(model_name, json_file_path):
     # Initialize the tokenizer and model dynamically based on the model_name argument
     tokenizer = MT5Tokenizer.from_pretrained(model_name)
-    model = MT5ForConditionalGeneration.from_pretrained(model_name)
+    model = MT5ForConditionalGeneration.from_pretrained(model_name).to(device)
 
     # Use the refactored data_processing module to get the test data
     _, _, test_df = data_processing.get_data_splits(json_file_path)
