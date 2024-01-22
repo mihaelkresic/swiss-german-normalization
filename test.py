@@ -22,7 +22,7 @@ def perform_inference(test_df, model, tokenizer):
         input = tokenizer(input_text, return_tensors="pt")
 
         # Generate prediction
-        output = model.generate(**inputs)
+        output = model.generate(**input)
         
         # Decode the generated ids
         pred_text = tokenizer.decode(output[0], skip_special_tokens=True)
