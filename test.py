@@ -24,18 +24,18 @@ def perform_inference(test_df, model, tokenizer):
 
         input_text = "translate German to English: " + original_text
         
-        tokenized_input = tokenizer(input_text, return_tensors="pt")
+        tokenized_input = tokenizer(input_text, return_tensors="pt", max_length=512, truncation=True, padding="max_length")
 
         input_ids = tokenized_input['input_ids'].to(device)
         attention_mask = tokenized_input['attention_mask'].to(device)
 
         # Generate prediction
         #output = model.generate(input_ids=input["input_ids"], attention_mask=input["attention_mask"])
-        output = model.generate(input_ids=input_ids, attention_mask=attention_mask)
+        output = model.generate(input_ids=input_ids, attention_mask=attention_mask, num_beams=5, length_penalty=2.5, repetition_penalty=1.5, early_stopping=True)
         
         
         # Decode the generated ids
-        pred_text = tokenizer.decode(output[0], skip_special_tokens=True)
+        pred_text = tokenizer.decode(output[0], skip_special_tokens=False)
         preds.append(pred_text)
     
     test_df["preds"] = preds
