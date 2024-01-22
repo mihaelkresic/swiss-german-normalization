@@ -15,19 +15,14 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def perform_inference(test_df, model, tokenizer):
-    # Prepare the device
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model.to(device)
 
     preds = []
     for input_text in test_df.input_text.values.tolist():
         # Encode the input text
-        encoded = tokenizer.encode_plus(input_text, return_tensors="pt", max_length=512, truncation=True, padding="max_length")
-        input_ids = encoded['input_ids'].to(device)
-        attention_mask = encoded['attention_mask'].to(device)
+        input = tokenizer(input_text, return_tensors="pt")
 
         # Generate prediction
-        output = model.generate(input_ids, attention_mask=attention_mask, max_length=100, num_beams=5, length_penalty=2.5, repetition_penalty=1.5, early_stopping=True)
+        output = model.generate(**inputs)
         
         # Decode the generated ids
         pred_text = tokenizer.decode(output[0], skip_special_tokens=True)
