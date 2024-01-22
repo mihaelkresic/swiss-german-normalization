@@ -5,7 +5,7 @@ import torch
 import logging
 import argparse
 
-from transformers import MT5ForConditionalGeneration, T5Tokenizer
+from transformers import MT5ForConditionalGeneration, MT5Tokenizer
 import sacrebleu
 
 import data_processing
