@@ -22,7 +22,7 @@ def perform_inference(test_df, model, tokenizer):
     for original_text in test_df.input_text.values.tolist():
         # Encode the input text
 
-        input_text = "translate Swiss German to German: " + original_text
+        input_text = "translate German to English: " + original_text
         
         tokenized_input = tokenizer(input_text, return_tensors="pt")
 
