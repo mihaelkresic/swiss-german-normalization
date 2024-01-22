@@ -19,8 +19,11 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def perform_inference(test_df, model, tokenizer):
 
     preds = []
-    for input_text in test_df.input_text.values.tolist():
+    for original_text in test_df.input_text.values.tolist():
         # Encode the input text
+
+        input_text = "translate Swiss German to German: " + original_text
+        
         tokenized_input = tokenizer(input_text, return_tensors="pt")
 
         input_ids = tokenized_input['input_ids'].to(device)
