@@ -21,10 +21,10 @@ def perform_inference(test_df, model, tokenizer):
     preds = []
     for input_text in test_df.input_text.values.tolist():
         # Encode the input text
-        input = tokenizer(input_text, return_tensors="pt")
+        tokenized_input = tokenizer(input_text, return_tensors="pt")
 
-        input_ids = input['input_ids'].to(device)
-        attention_mask = input['attention_mask'].to(device)
+        input_ids = tokenized_input['input_ids'].to(device)
+        attention_mask = tokenized_input['attention_mask'].to(device)
 
         # Generate prediction
         #output = model.generate(input_ids=input["input_ids"], attention_mask=input["attention_mask"])
