@@ -35,7 +35,7 @@ def perform_inference(test_df, model, tokenizer):
         
         
         # Decode the generated ids
-        pred_text = tokenizer.decode(output[0], skip_special_tokens=False)
+        pred_text = tokenizer.decode(output[0], skip_special_tokens=True)
         preds.append(pred_text)
     
     test_df["preds"] = preds
