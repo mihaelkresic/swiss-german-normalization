@@ -19,10 +19,10 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def perform_inference(test_df, model, tokenizer):
 
     preds = []
-    for original_text in test_df.input_text.values.tolist():
+    for input_text in test_df.input_text.values.tolist():
         # Encode the input text
 
-        input_text = "translate German to English: " + original_text
+        #input_text = "translate German to English: " + original_text
         
         tokenized_input = tokenizer(input_text, return_tensors="pt", max_length=512, truncation=True, padding="max_length")
 
