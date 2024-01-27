@@ -31,7 +31,7 @@ def perform_inference(test_df, model, tokenizer):
 
         # Generate prediction
         #output = model.generate(input_ids=input["input_ids"], attention_mask=input["attention_mask"])
-        output = model.generate(input_ids=input_ids, attention_mask=attention_mask, num_beams=5, length_penalty=2.5, repetition_penalty=1.5, early_stopping=True)
+        output = model.generate(input_ids=input_ids, attention_mask=attention_mask, max_length=90, num_beams=5, repetition_penalty=1.5, early_stopping=True)
         
         
         # Decode the generated ids
