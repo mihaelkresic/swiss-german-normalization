@@ -24,7 +24,7 @@ def perform_inference(test_df, model, tokenizer):
 
         #input_text = "translate German to English: " + original_text
         
-        tokenized_input = tokenizer(input_text, return_tensors="pt", max_length=512, truncation=True, padding="max_length")
+        tokenized_input = tokenizer(input_text, return_tensors="pt", max_length=90, truncation=True, padding="max_length")
 
         input_ids = tokenized_input['input_ids'].to(device)
         attention_mask = tokenized_input['attention_mask'].to(device)
