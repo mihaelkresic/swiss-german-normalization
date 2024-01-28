@@ -5,7 +5,7 @@ import torch
 import logging
 import argparse
 
-from transformers import MT5ForConditionalGeneration, MT5TokenizerFast
+from transformers import MT5ForConditionalGeneration, MT5Tokenizer
 import sacrebleu
 
 import data_processing
@@ -63,7 +63,7 @@ def perform_inference(test_df, model, tokenizer, batch_size=8):
 
 def main(model_name, json_file_path):
     # Initialize the tokenizer and model dynamically based on the model_name argument
-    tokenizer = MT5TokenizerFast.from_pretrained(model_name)
+    tokenizer = MT5Tokenizer.from_pretrained(model_name)
     model = MT5ForConditionalGeneration.from_pretrained(model_name).to(device)
 
     # Use the refactored data_processing module to get the test data
