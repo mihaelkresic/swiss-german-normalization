@@ -59,14 +59,18 @@ def main(model_size):
         logging_dir=None,
         per_device_train_batch_size=8,        # Batch size for training
         per_device_eval_batch_size=8,         # Batch size for evaluation
+        learning_rate=5e-5,
         num_train_epochs=10,                  # Number of training epochs
         warmup_steps=500,                     # Number of warmup steps for learning rate scheduler
         evaluation_strategy="steps",          # Evaluation strategy
+        save_strategy="steps",                # Save strategy
         do_eval=True,
-        save_steps=500,                      # Save checkpoint every X steps
-        eval_steps=500,                       # Evaluate model every X steps
-        learning_rate=5e-5,
+        save_steps=1000,                       # Save checkpoint every X steps
+        eval_steps=1000,                       # Evaluate model every X steps
+        save_total_limit=3,
         predict_with_generate=True,            # Use generate for prediction
+        load_best_model_at_end=True,           # Load the best model at the end of training
+        greater_is_better=False,
         report_to="wandb",
         run_name=run_name
     )
@@ -83,6 +87,9 @@ def main(model_size):
 
     # Train the model
     trainer.train()
+
+    best_model_dir = f"/content/drive/MyDrive/swiss-german-normalization/{model_size}/best_model/"
+    model.save_pretrained(best_model_dir)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Train mT5 model')
