@@ -3,6 +3,7 @@ import logging
 import data_processing
 from transformers import MT5ForConditionalGeneration, MT5Tokenizer, Seq2SeqTrainingArguments, Seq2SeqTrainer, DataCollatorForSeq2Seq
 from torch.utils.data import Dataset
+import torch
 
 # Setting up logging
 logging.basicConfig(level=logging.INFO)
