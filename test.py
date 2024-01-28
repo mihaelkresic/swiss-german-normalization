@@ -21,13 +21,13 @@ def perform_inference(test_df, model, tokenizer, batch_size=8):
     preds = []
     for i in range(0, len(test_df), batch_size):
         batch_texts = test_df.iloc[i:i+batch_size]['input_text'].tolist()
-        tokenized_inputs = tokenizer(batch_texts, return_tensors="pt", max_length=90, truncation=True, padding="max_length")
+        tokenized_inputs = tokenizer(batch_texts, return_tensors="pt", max_length=100, truncation=True, padding="max_length")
 
         input_ids = tokenized_inputs['input_ids'].to(device)
         attention_mask = tokenized_inputs['attention_mask'].to(device)
 
         # Generate predictions in batches
-        outputs = model.generate(input_ids=input_ids, attention_mask=attention_mask, max_length=90, num_beams=5, repetition_penalty=1.5, early_stopping=True)
+        outputs = model.generate(input_ids=input_ids, attention_mask=attention_mask, max_length=100, num_beams=5, repetition_penalty=1.5, early_stopping=True)
         
         # Decode each output in the batch and add to the predictions list
         preds.extend([tokenizer.decode(output, skip_special_tokens=True) for output in outputs])
