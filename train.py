@@ -65,8 +65,8 @@ def main(model_size):
         evaluation_strategy="steps",          # Evaluation strategy
         save_strategy="steps",                # Save strategy
         do_eval=True,
-        save_steps=1000,                       # Save checkpoint every X steps
-        eval_steps=1000,                       # Evaluate model every X steps
+        save_steps=2500,                       # Save checkpoint every X steps
+        eval_steps=2500,                       # Evaluate model every X steps
         save_total_limit=2,
         save_only_model=True,
         predict_with_generate=True,            # Use generate for prediction
