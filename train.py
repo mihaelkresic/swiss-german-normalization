@@ -70,6 +70,7 @@ def main(model_size):
         save_total_limit=3,
         predict_with_generate=True,            # Use generate for prediction
         load_best_model_at_end=True,           # Load the best model at the end of training
+        metric_for_best_model="loss",
         greater_is_better=False,
         report_to="wandb",
         run_name=run_name
