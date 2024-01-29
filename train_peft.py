@@ -37,9 +37,9 @@ class MT5Dataset(Dataset):
           "labels": target_encodings["input_ids"]}
 
 def main(model_size):
-    run_name = f"{model_size}"
+    run_name = f"{model_size}_peft"
     model_name = f"google/{model_size}"
-    output_dir = f"/content/drive/MyDrive/swiss-german-normalization/{model_size}/"
+    output_dir = f"/content/drive/MyDrive/swiss-german-normalization/{model_size}_peft/"
   
     # Load the tokenizer and model
     tokenizer = MT5Tokenizer.from_pretrained(model_name)
@@ -103,7 +103,7 @@ def main(model_size):
     # Train the model
     trainer.train()
 
-    best_model_dir = f"/content/drive/MyDrive/swiss-german-normalization/{model_size}/best_model/"
+    best_model_dir = f"/content/drive/MyDrive/swiss-german-normalization/{model_size}_peft/best_model/"
     model.save_pretrained(best_model_dir)
 
 if __name__ == "__main__":
