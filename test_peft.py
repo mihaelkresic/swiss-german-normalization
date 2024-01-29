@@ -46,13 +46,16 @@ def main(model_name, json_file_path):
 
     peft_model = PeftModel.from_pretrained(model,
                                        '/content/drive/MyDrive/swiss-german-normalization/mt5-large_peft/best_model',
-                                       is_trainable=False).to(device)
+                                       is_trainable=False)
 
+    merged_model = peft_model.merge_and_unload()
+
+    merged_model.to(device)
     # Use the refactored data_processing module to get the test data
     _, _, test_df = data_processing.get_data_splits(json_file_path)
 
     # Perform inference
-    result_df = perform_inference(test_df, peft_model, tokenizer)
+    result_df = perform_inference(test_df, merged_model, tokenizer)
     return result_df
 
 if __name__ == "__main__":
