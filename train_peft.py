@@ -43,7 +43,7 @@ def main(model_size):
   
     # Load the tokenizer and model
     tokenizer = MT5Tokenizer.from_pretrained(model_name)
-    model = MT5ForConditionalGeneration.from_pretrained(model_name, load_in_8bit=True).to(device)
+    model = MT5ForConditionalGeneration.from_pretrained(model_name, load_in_8bit=True)
     model = prepare_model_for_kbit_training(model)
     
     lora_config = LoraConfig(
