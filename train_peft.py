@@ -50,7 +50,7 @@ def main(model_size):
         r=16, 
         lora_alpha=32, 
         target_modules=["q", "v"],
-        lora_dropout=0.01,
+        lora_dropout=0.05,
         bias="none", 
         task_type="SEQ_2_SEQ_LM"
     )  
