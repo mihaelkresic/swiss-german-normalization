@@ -49,8 +49,8 @@ def main(model_size):
     target_modules = ['v', 'o', 'wi_0', 'lm_head', 'q', 'k', 'wo', 'wi_1']
     
     lora_config = LoraConfig(
-        r=8, 
-        lora_alpha=16, 
+        r=16, 
+        lora_alpha=32, 
         target_modules=target_modules,
         lora_dropout=0.05,
         bias="none", 
