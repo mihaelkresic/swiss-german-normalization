@@ -52,7 +52,7 @@ def main(model_size):
         target_modules=["q", "v"],
         lora_dropout=0.05,
         bias="none", 
-        task_type="SEQ_2_SEQ_LM"
+        task_type=TaskType.SEQ_2_SEQ_LM
     )  
 
     model = get_peft_model(model, lora_config)
