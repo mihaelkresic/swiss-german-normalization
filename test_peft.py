@@ -41,8 +41,8 @@ def main(model_name, json_file_path):
     #tokenizer = MT5Tokenizer.from_pretrained(model_name)
     #model = MT5ForConditionalGeneration.from_pretrained(model_name).to(device)
 
-    tokenizer = MT5Tokenizer.from_pretrained(google/mt5-large)
-    model = MT5ForConditionalGeneration.from_pretrained(google/mt5-large)
+    tokenizer = MT5Tokenizer.from_pretrained('google/mt5-large')
+    model = MT5ForConditionalGeneration.from_pretrained('google/mt5-large')
 
     peft_model = PeftModel.from_pretrained(peft_model_base,
                                        '/content/drive/MyDrive/swiss-german-normalization/mt5-large_peft/best_model',
