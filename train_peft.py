@@ -46,7 +46,7 @@ def main(model_size):
     model = MT5ForConditionalGeneration.from_pretrained(model_name, load_in_8bit=True)
     model = prepare_model_for_kbit_training(model)
 
-    target_modules = ['v', 'o', 'wi_0', 'lm_head', 'q', 'k', 'wo', 'wi_1']
+    target_modules = ['q', 'k', 'v', 'o', 'wi_0', 'wi_1', 'wo']
     #target_modules = ["q", "v"]
     
     lora_config = LoraConfig(
