@@ -4,6 +4,7 @@ peft
 sentencepiece
 bitsandbytes
 accelerate
+torch_optimizer
 sacrebleu
 bleu
 rouge
