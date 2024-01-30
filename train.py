@@ -65,12 +65,12 @@ def main(model_size):
         evaluation_strategy="steps",          # Evaluation strategy
         save_strategy="steps",                # Save strategy
         do_eval=True,
-        save_steps=2500,                       # Save checkpoint every X steps
-        eval_steps=2500,                       # Evaluate model every X steps
+        save_steps=500,                       # Save checkpoint every X steps
+        eval_steps=500,                       # Evaluate model every X steps
         save_total_limit=2,
         predict_with_generate=True,            # Use generate for prediction
         load_best_model_at_end=True,           # Load the best model at the end of training
-        metric_for_best_model="eval34_loss",
+        metric_for_best_model="eval_chr_f_score",
         greater_is_better=False,
         report_to="wandb",
         run_name=run_name
