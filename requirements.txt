@@ -6,6 +6,7 @@ bitsandbytes
 accelerate
 torch_optimizer
 sacrebleu
+unbabel-comet
 bleu
 rouge
 wandb
