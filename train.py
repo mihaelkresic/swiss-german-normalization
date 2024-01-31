@@ -6,7 +6,8 @@ from torch.utils.data import Dataset
 import torch
 
 #new
-from torch_optimizer import Adafactor
+#from torch_optimizer import Adafactor
+from transformers.optimization import Adafactor, AdafactorSchedule
 
 # Setting up logging
 logging.basicConfig(level=logging.INFO)
