@@ -70,6 +70,8 @@ def main(model_size):
         per_device_eval_batch_size=8,         # Batch size for evaluation
         #learning_rate=5e-5,
         learning_rate=1e-3,
+        #new
+        lr_scheduler_type="constant_with_warmup",
         num_train_epochs=10,                  # Number of training epochs
         warmup_steps=500,                     # Number of warmup steps for learning rate scheduler
         evaluation_strategy="steps",          # Evaluation strategy
