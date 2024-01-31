@@ -58,7 +58,7 @@ def main(model_size):
 
     #new 1: Adafactor + 5e-5
     optimizer = Adafactor(model.parameters(), scale_parameter=False, relative_step=False, warmup_init=False, lr=5e-5)
-    lr_scheduler = AdafactorSchedule(optimizer)
+    lr_scheduler = None
 
     
     # Define training arguments
