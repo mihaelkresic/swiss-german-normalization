@@ -5,6 +5,9 @@ from transformers import MT5ForConditionalGeneration, MT5Tokenizer, Seq2SeqTrain
 from torch.utils.data import Dataset
 import torch
 
+#new
+from torch_optimizer import Adafactor
+
 # Setting up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -52,6 +55,11 @@ def main(model_size):
     train_dataset = MT5Dataset(tokenizer, train_df['input_text'].tolist(), train_df['target_text'].tolist())
     val_dataset = MT5Dataset(tokenizer, val_df['input_text'].tolist(), val_df['target_text'].tolist())
 
+    #new 1: Adafactor + 5e-5
+    optimizer = Adafactor(model.parameters(), scale_parameter=False, relative_step=False, warmup_init=False, lr=5e-5)
+    lr_scheduler = AdafactorSchedule(optimizer)
+
+    
     # Define training arguments
     training_args = Seq2SeqTrainingArguments(
         output_dir=output_dir,                # Output directory for model checkpoints
@@ -59,14 +67,15 @@ def main(model_size):
         logging_dir=None,
         per_device_train_batch_size=8,        # Batch size for training
         per_device_eval_batch_size=8,         # Batch size for evaluation
+        #learning_rate=5e-5,
         learning_rate=5e-5,
         num_train_epochs=10,                  # Number of training epochs
         warmup_steps=500,                     # Number of warmup steps for learning rate scheduler
         evaluation_strategy="steps",          # Evaluation strategy
         save_strategy="steps",                # Save strategy
         do_eval=True,
-        save_steps=500,                       # Save checkpoint every X steps
-        eval_steps=500,                       # Evaluate model every X steps
+        save_steps=2000,                       # Save checkpoint every X steps
+        eval_steps=2000,                       # Evaluate model every X steps
         save_total_limit=2,
         predict_with_generate=True,            # Use generate for prediction
         load_best_model_at_end=True,           # Load the best model at the end of training
@@ -79,6 +88,7 @@ def main(model_size):
     # Initialize the trainer
     trainer = Seq2SeqTrainer(
         model=model,
+        optimizers=(optimizer, lr_scheduler),
         args=training_args,
         train_dataset=train_dataset,
         eval_dataset=val_dataset,
