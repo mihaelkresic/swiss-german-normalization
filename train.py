@@ -57,7 +57,7 @@ def main(model_size):
     val_dataset = MT5Dataset(tokenizer, val_df['input_text'].tolist(), val_df['target_text'].tolist())
 
     #new 1: Adafactor + 5e-5
-    optimizer = Adafactor(model.parameters(), scale_parameter=False, relative_step=False, warmup_init=False, lr=5e-5)
+    optimizer = Adafactor(model.parameters(), scale_parameter=False, relative_step=False, warmup_init=False, lr=1e-3)
     lr_scheduler = None
 
     
@@ -69,7 +69,7 @@ def main(model_size):
         per_device_train_batch_size=8,        # Batch size for training
         per_device_eval_batch_size=8,         # Batch size for evaluation
         #learning_rate=5e-5,
-        learning_rate=5e-5,
+        learning_rate=1e-3,
         num_train_epochs=10,                  # Number of training epochs
         warmup_steps=500,                     # Number of warmup steps for learning rate scheduler
         evaluation_strategy="steps",          # Evaluation strategy
