@@ -86,7 +86,7 @@ def main(model_size):
         run_name=run_name
     )
 
-    # Initialize the trainer
+    # Initialize the trainerb
     trainer = Seq2SeqTrainer(
         model=model,
         optimizers=(optimizer, lr_scheduler),
