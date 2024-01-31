@@ -102,11 +102,8 @@ def main(model_size):
     # Train the model
     trainer.train()
 
-    best_model_dir = f"/content/drive/MyDrive/swiss-german-normalization/{model_size}/best_model_/"
-    model.save_pretrained(best_model_dir)
-
-    best_model_dir2 = f"/content/drive/MyDrive/swiss-german-normalization/{model_size}/best_model/"
-    trainer.save_model(best_model_dir2)
+    best_model_dir = f"/content/drive/MyDrive/swiss-german-normalization/{model_size}/best_model/"
+    trainer.save_model(best_model_dir)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Train mT5 model')
