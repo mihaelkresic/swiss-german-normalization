@@ -8,6 +8,7 @@ import argparse
 from transformers import MT5ForConditionalGeneration, MT5Tokenizer
 from peft import PeftModel, PeftConfig
 import sacrebleu
+from comet import download_model, load_from_checkpoint
 
 import data_processing
 
@@ -84,6 +85,18 @@ if __name__ == "__main__":
     print('ChrF++ score:') 
     print(scores) 
     print('')
+
+    comed_model_path = download_model("Unbabel/wmt22-comet-da")
+    comet_model = load_from_checkpoint(comed_model_path)
+
+    data = [{"src": row["input_text"], "mt": row["preds"], "ref": row["target_text"]} for index, row in result_df.iterrows()]
+
+    comet_scores = comet_model.predict(data, batch_size=8, gpus=1)
+
+    print('')
+    print('COMET score:') 
+    print(comet_scores.system_score) 
+    print('')    
 
     # Optional: Save the result_df to a CSV file
     output_folder = '/content/drive/MyDrive/swiss-german-normalization/'
