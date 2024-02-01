@@ -76,7 +76,7 @@ def main(model_size):
     # Define training arguments
     training_args = Seq2SeqTrainingArguments(
         output_dir=output_dir,                # Output directory for model checkpoints
-        overwrite_output_dir=True,            # Overwrite the content of the output dir
+        #overwrite_output_dir=True,            # Overwrite the content of the output dir
         logging_dir=None,
         per_device_train_batch_size=8,        # Batch size for training
         per_device_eval_batch_size=8,         # Batch size for evaluation
@@ -110,13 +110,14 @@ def main(model_size):
     )
 
     # Train the model
-    trainer.train()
+    trainer.train(resume_from_checkpoint=True)
 
     #best_model_dir = f"/content/drive/MyDrive/swiss-german-normalization/{model_size}_peft/best_model_/"
     #model.save_pretrained(best_model_dir)
 
     best_model_dir = f"/content/drive/MyDrive/swiss-german-normalization/{model_size}_peft/best_model/"
     trainer.save_model(best_model_dir)
+    tokenizer.save_pretrained(best_model_dir)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Train mT5 model')
