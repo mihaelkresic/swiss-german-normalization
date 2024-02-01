@@ -4,6 +4,7 @@ import data_processing
 from transformers import MT5ForConditionalGeneration, MT5Tokenizer, Seq2SeqTrainingArguments, Seq2SeqTrainer, DataCollatorForSeq2Seq
 from torch.utils.data import Dataset
 import torch
+from transformers.optimization import Adafactor, AdafactorSchedule
 import accelerate
 import bitsandbytes
 from peft import prepare_model_for_kbit_training, LoraConfig, get_peft_model, TaskType
@@ -53,7 +54,7 @@ def main(model_size):
         r=8, 
         lora_alpha=8, 
         target_modules=target_modules,
-        lora_dropout=0.05,
+        lora_dropout=0.01,
         bias="none", 
         task_type=TaskType.SEQ_2_SEQ_LM
     )  
@@ -69,6 +70,9 @@ def main(model_size):
     train_dataset = MT5Dataset(tokenizer, train_df['input_text'].tolist(), train_df['target_text'].tolist())
     val_dataset = MT5Dataset(tokenizer, val_df['input_text'].tolist(), val_df['target_text'].tolist())
 
+    optimizer = Adafactor(model.parameters(), scale_parameter=False, relative_step=False, warmup_init=False, lr=1e-3)
+    lr_scheduler = None
+
     # Define training arguments
     training_args = Seq2SeqTrainingArguments(
         output_dir=output_dir,                # Output directory for model checkpoints
@@ -76,14 +80,15 @@ def main(model_size):
         logging_dir=None,
         per_device_train_batch_size=8,        # Batch size for training
         per_device_eval_batch_size=8,         # Batch size for evaluation
-        learning_rate=5e-5,
+        #learning_rate=5e-5,
+        learning_rate=1e-3,
         num_train_epochs=10,                  # Number of training epochs
         warmup_steps=500,                     # Number of warmup steps for learning rate scheduler
         evaluation_strategy="steps",          # Evaluation strategy
         save_strategy="steps",                # Save strategy
         do_eval=True,
-        save_steps=1000,                       # Save checkpoint every X steps
-        eval_steps=1000,                       # Evaluate model every X steps
+        save_steps=2000,                       # Save checkpoint every X steps
+        eval_steps=2000,                       # Evaluate model every X steps
         save_total_limit=2,
         predict_with_generate=True,            # Use generate for prediction
         load_best_model_at_end=True,           # Load the best model at the end of training
@@ -96,6 +101,7 @@ def main(model_size):
     # Initialize the trainer
     trainer = Seq2SeqTrainer(
         model=model,
+        optimizers=(optimizer, lr_scheduler),
         args=training_args,
         train_dataset=train_dataset,
         eval_dataset=val_dataset,
@@ -106,11 +112,11 @@ def main(model_size):
     # Train the model
     trainer.train()
 
-    best_model_dir = f"/content/drive/MyDrive/swiss-german-normalization/{model_size}_peft/best_model_/"
-    model.save_pretrained(best_model_dir)
+    #best_model_dir = f"/content/drive/MyDrive/swiss-german-normalization/{model_size}_peft/best_model_/"
+    #model.save_pretrained(best_model_dir)
 
-    best_model_dir2 = f"/content/drive/MyDrive/swiss-german-normalization/{model_size}_peft/best_model/"
-    trainer.save_model(best_model_dir2)
+    best_model_dir = f"/content/drive/MyDrive/swiss-german-normalization/{model_size}_peft/best_model/"
+    trainer.save_model(best_model_dir)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Train mT5 model')
