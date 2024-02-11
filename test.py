@@ -66,7 +66,7 @@ if __name__ == "__main__":
     for index, row in result_df.iterrows():
         prediction = row['preds']
         reference = [row['target_text']]
-        score = sacrebleu.sentence_chrf(prediction, reference, beta=2, word_order=1).score
+        score = sacrebleu.sentence_chrf(prediction, reference, beta=2, word_order=2).score
         chrf_scores.append(score)
 
     scores = sum(chrf_scores) / len(chrf_scores)
