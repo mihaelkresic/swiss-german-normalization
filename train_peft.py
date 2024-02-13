@@ -110,7 +110,7 @@ def main(model_size):
     )
 
     # Train the model
-    trainer.train(resume_from_checkpoint=True)
+    trainer.train()
 
     #best_model_dir = f"/content/drive/MyDrive/swiss-german-normalization/{model_size}_peft/best_model_/"
     #model.save_pretrained(best_model_dir)
