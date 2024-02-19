@@ -90,5 +90,5 @@ if __name__ == "__main__":
 
     # Optional: Save the result_df to a CSV file
     output_folder = '/content/drive/MyDrive/swiss-german-normalization/'
-    result_df.to_csv(output_folder + 'test_predictions_' + args.model_name.replace("/", "_") + '.csv', index=False)
+    result_df.to_csv(output_folder + 'test_predictions_' + args.model_name.replace("/", "_") + '.csv', sep=";", index=False, encoding='utf-8-sig')
     logger.info("Inference completed and saved to CSV.")
