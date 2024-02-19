@@ -53,7 +53,21 @@ def main(model_name, json_file_path):
 
     merged_model.to(device)
     # Use the refactored data_processing module to get the test data
-    _, _, test_df = data_processing.get_data_splits(json_file_path)
+    #_, _, test_df = data_processing.get_data_splits(json_file_path)
+
+    data = [
+        {"input_text": "demit isch si au für vili bürgerlichi wählbar", "target_text": "damit ist sie auch für viele bürgerliche wählbar.", "prefix": ""},
+        {"input_text": "drmit ischsi o für vili bürgerlechi wäubar.", "target_text": "damit ist sie auch für viele bürgerliche wählbar.", "prefix": ""},
+        {"input_text": "drmit isch sie au für vieli bürgerlichi wählbar.", "target_text": "damit ist sie auch für viele bürgerliche wählbar.", "prefix": ""},
+        {"input_text": "drum isch si au für vill bürgerlichi wählbar.", "target_text": "damit ist sie auch für viele bürgerliche wählbar.", "prefix": ""},
+        {"input_text": "dermit isch schi öi fer vill bürgerlichi wählbar.", "target_text": "damit ist sie auch für viele bürgerliche wählbar.", "prefix": ""},
+        {"input_text": "demit isch sie au für vieli bürger wählbar.", "target_text": "damit ist sie auch für viele bürgerliche wählbar.", "prefix": ""},
+        {"input_text": "demet esch sie au för velli börgerlechi wählbar.", "target_text": "damit ist sie auch für viele bürgerliche wählbar.", "prefix": ""},
+        {"input_text": "demet escher au för velli börgerlechi wählbar.", "target_text": "damit ist sie auch für viele bürgerliche wählbar.", "prefix": ""}
+    ]
+
+    # Create the DataFrame
+    test_df = pd.DataFrame(data)
 
     # Perform inference
     result_df = perform_inference(test_df, merged_model, tokenizer)
