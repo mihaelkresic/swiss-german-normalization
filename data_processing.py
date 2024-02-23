@@ -41,16 +41,12 @@ def get_data_splits(json_file_path):
     return split_data(df)
 
 def main():
-    # Define the path to your JSON file
     json_file_path = '/content/swiss-german-normalization/sentences_ch_de_numerics.json'
     
-    # Get the data splits
     train_df, val_df, test_df = get_data_splits(json_file_path)
     
-    # Define the output folder path
     output_folder = '/content/drive/MyDrive/swiss-german-normalization/'
     
-    # Save the data splits to CSV files
     train_df.to_csv(output_folder + 'train.csv', index=False)
     val_df.to_csv(output_folder + 'val.csv', index=False)
     test_df.to_csv(output_folder + 'test.csv', index=False)
