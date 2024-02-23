@@ -1,4 +1,3 @@
-# Import necessary libraries
 import pandas as pd
 import numpy as np
 import torch
@@ -12,7 +11,6 @@ from comet import download_model, load_from_checkpoint
 
 import data_processing
 
-# Initialize logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -28,20 +26,15 @@ def perform_inference(test_df, peft_model, tokenizer, batch_size=8):
         input_ids = tokenized_inputs['input_ids'].to(device)
         attention_mask = tokenized_inputs['attention_mask'].to(device)
 
-        # Generate predictions in batches
         outputs = peft_model.generate(input_ids=input_ids, attention_mask=attention_mask, max_length=100, num_beams=5, repetition_penalty=1.5, early_stopping=True)
         
-        # Decode each output in the batch and add to the predictions list
         preds.extend([tokenizer.decode(output, skip_special_tokens=True) for output in outputs])
     
     test_df["preds"] = preds
     return test_df
 
 def main(model_name, json_file_path):
-    # Initialize the tokenizer and model dynamically based on the model_name argument
-    #tokenizer = MT5Tokenizer.from_pretrained(model_name)
-    #model = MT5ForConditionalGeneration.from_pretrained(model_name).to(device)
-
+    
     tokenizer = MT5Tokenizer.from_pretrained('/content/drive/MyDrive/swiss-german-normalization/mt5-large_peft/best_model')
     model = MT5ForConditionalGeneration.from_pretrained('google/mt5-large')
 
@@ -52,40 +45,21 @@ def main(model_name, json_file_path):
     merged_model = peft_model.merge_and_unload()
 
     merged_model.to(device)
-    # Use the refactored data_processing module to get the test data
-    #_, _, test_df = data_processing.get_data_splits(json_file_path)
+     Use the refactored data_processing module to get the test data
+    _, _, test_df = data_processing.get_data_splits(json_file_path)
 
-    data = [
-        {"input_text": "demit isch si au für vili bürgerlichi wählbar", "target_text": "damit ist sie auch für viele bürgerliche wählbar.", "prefix": ""},
-        {"input_text": "drmit ischsi o für vili bürgerlechi wäubar.", "target_text": "damit ist sie auch für viele bürgerliche wählbar.", "prefix": ""},
-        {"input_text": "drmit isch sie au für vieli bürgerlichi wählbar.", "target_text": "damit ist sie auch für viele bürgerliche wählbar.", "prefix": ""},
-        {"input_text": "drum isch si au für vill bürgerlichi wählbar.", "target_text": "damit ist sie auch für viele bürgerliche wählbar.", "prefix": ""},
-        {"input_text": "dermit isch schi öi fer vill bürgerlichi wählbar.", "target_text": "damit ist sie auch für viele bürgerliche wählbar.", "prefix": ""},
-        {"input_text": "demit isch sie au für vieli bürger wählbar.", "target_text": "damit ist sie auch für viele bürgerliche wählbar.", "prefix": ""},
-        {"input_text": "demet esch sie au för velli börgerlechi wählbar.", "target_text": "damit ist sie auch für viele bürgerliche wählbar.", "prefix": ""},
-        {"input_text": "demet escher au för velli börgerlechi wählbar.", "target_text": "damit ist sie auch für viele bürgerliche wählbar.", "prefix": ""}
-    ]
-
-    # Create the DataFrame
-    test_df = pd.DataFrame(data)
-
-    # Perform inference
     result_df = perform_inference(test_df, merged_model, tokenizer)
     return result_df
 
 if __name__ == "__main__":
-    # Parse command-line arguments for model size
     parser = argparse.ArgumentParser(description='mT5 model size selector')
     parser.add_argument('model_name', type=str, help='Model size (e.g., google/mt5-small, google/mt5-base, google/mt5-large, etc.)')
     args = parser.parse_args()
 
-    # Path to your JSON file containing the test data
     json_file_path = '/content/swiss-german-normalization/sentences_ch_de_numerics.json'
 
-    # Call the main function to perform inference with the specified model size
     result_df = main(args.model_name, json_file_path)
 
-    # Calculate ChrF++ scores
     chrf_scores = []
     for index, row in result_df.iterrows():
         prediction = row['preds']
@@ -112,7 +86,6 @@ if __name__ == "__main__":
     print(comet_scores.system_score) 
     print('')    
 
-    # Optional: Save the result_df to a CSV file
     output_folder = '/content/drive/MyDrive/swiss-german-normalization/'
     result_df.to_csv(output_folder + 'test_predictions_' + args.model_name.replace("/", "_") + '.csv', sep=";", index=False, encoding='utf-8-sig')
     logger.info("Inference completed and saved to CSV.")
