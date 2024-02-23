@@ -5,18 +5,14 @@ from transformers import MT5ForConditionalGeneration, MT5Tokenizer, Seq2SeqTrain
 from torch.utils.data import Dataset
 import torch
 
-#new
-#from torch_optimizer import Adafactor
 from transformers.optimization import Adafactor, AdafactorSchedule
 
-# Setting up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-# Custom dataset class
 class MT5Dataset(Dataset):
     def __init__(self, tokenizer, input_texts, target_texts, max_length=100):
         self.tokenizer = tokenizer
@@ -42,15 +38,12 @@ def main(model_size):
     model_name = f"google/{model_size}"
     output_dir = f"/content/drive/MyDrive/swiss-german-normalization/{model_size}/"
   
-    # Load the tokenizer and model
     tokenizer = MT5Tokenizer.from_pretrained(model_name)
     model = MT5ForConditionalGeneration.from_pretrained(model_name).to(device)
 
 
-    # Path to your JSON file containing the test data
     json_file_path = '/content/swiss-german-normalization/sentences_ch_de_numerics.json'
   
-    # Load and process data
     train_df, val_df, _ = data_processing.get_data_splits(json_file_path)
   
     train_dataset = MT5Dataset(tokenizer, train_df['input_text'].tolist(), train_df['target_text'].tolist())
@@ -63,32 +56,28 @@ def main(model_size):
     
     # Define training arguments
     training_args = Seq2SeqTrainingArguments(
-        output_dir=output_dir,                # Output directory for model checkpoints
-        overwrite_output_dir=True,            # Overwrite the content of the output dir
+        output_dir=output_dir,                
+        overwrite_output_dir=True,            
         logging_dir=None,
-        per_device_train_batch_size=8,        # Batch size for training
-        per_device_eval_batch_size=8,         # Batch size for evaluation
-        #learning_rate=5e-5,
+        per_device_train_batch_size=8,       
+        per_device_eval_batch_size=8,         
         learning_rate=1e-3,
-        #new
-        #lr_scheduler_type="constant_with_warmup",
-        num_train_epochs=10,                  # Number of training epochs
-        warmup_steps=500,                     # Number of warmup steps for learning rate scheduler
-        evaluation_strategy="steps",          # Evaluation strategy
-        save_strategy="steps",                # Save strategy
+        num_train_epochs=10,                  
+        warmup_steps=500,                     
+        evaluation_strategy="steps",         
+        save_strategy="steps",              
         do_eval=True,
-        save_steps=2000,                       # Save checkpoint every X steps
-        eval_steps=2000,                       # Evaluate model every X steps
+        save_steps=2000,                       
+        eval_steps=2000,                       
         save_total_limit=2,
-        predict_with_generate=True,            # Use generate for prediction
-        load_best_model_at_end=True,           # Load the best model at the end of training
+        predict_with_generate=True,          
+        load_best_model_at_end=True,          
         metric_for_best_model="eval_loss",
         greater_is_better=False,
         report_to="wandb",
         run_name=run_name
     )
 
-    # Initialize the trainerb
     trainer = Seq2SeqTrainer(
         model=model,
         optimizers=(optimizer, lr_scheduler),
@@ -99,7 +88,6 @@ def main(model_size):
         data_collator=DataCollatorForSeq2Seq(tokenizer)
     )
 
-    # Train the model
     trainer.train()
 
     best_model_dir = f"/content/drive/MyDrive/swiss-german-normalization/{model_size}/best_model/"
